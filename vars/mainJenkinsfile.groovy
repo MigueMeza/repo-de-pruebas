@@ -1,6 +1,6 @@
 def call() {
+  agent any
   pipeline {
-    agent any
       stages {
         stage('Build') {
           steps {
@@ -8,9 +8,9 @@ def call() {
           }
         }
       stage('Test') {
-          steps {
-            echo "Testing"
-          }
+        steps {
+          echo "Testing"
+        }
       }
     }
   }
