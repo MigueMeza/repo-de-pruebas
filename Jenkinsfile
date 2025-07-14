@@ -1,26 +1,28 @@
-import jenkins.model.*
-
-def jobName = "pipeline-creado-xml-v2"
-def xml = '''
+pipeline {
+  agent any
+  environment {
+    JENKINS_URL = 'http://localhost:8080'   // Cambia si tu Jenkins está en otro host
+    JENKINS_USER = 'miguel'
+    JENKINS_TOKEN = '123'
+    NEW_JOB_NAME = 'job-creado-desde-curl'
+  }
+  stages {
+    stage('Crear Job') {
+      steps {
+        writeFile file: 'config.xml', text: '''
 <?xml version='1.1' encoding='UTF-8'?>
-<flow-definition plugin="workflow-job@1400.v7fd111b_ec82f">
-  <description>Job creado desde XML</description>
+<flow-definition plugin="workflow-job">
+  <description>Job creado desde API</description>
   <keepDependencies>false</keepDependencies>
-  <properties>
-    <hudson.plugins.jira.JiraProjectProperty plugin="jira@3.13"/>
-    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@332.va_1ee476d8f6d">
-      <autoRebuild>false</autoRebuild>
-      <rebuildDisabled>false</rebuildDisabled>
-    </com.sonyericsson.rebuild.RebuildSettings>
-  </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@3953.v19f11da_8d2f2">
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps">
     <script>
       pipeline {
         agent any
         stages {
           stage('Hello') {
             steps {
-              echo 'Hola desde un job creado por XML'
+              echo 'Hola desde un job creado por otro job'
             }
           }
         }
@@ -32,6 +34,13 @@ def xml = '''
   <disabled>false</disabled>
 </flow-definition>
 '''
-
-def stream = new ByteArrayInputStream(xml.getBytes("UTF-8"))
-Jenkins.instance.createProjectFromXML(jobName, stream)
+        sh '''
+          curl -X POST -u "$JENKINS_USER:$JENKINS_TOKEN" \
+            -H "Content-Type: application/xml" \
+            --data-binary @config.xml \
+            "$JENKINS_URL/createItem?name=$NEW_JOB_NAME"
+        '''
+      }
+    }
+  }
+}
