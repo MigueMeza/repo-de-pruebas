@@ -1,6 +1,6 @@
 import jenkins.model.*
 
-def jobName = "pipeline-creado-xml"
+def jobName = "pipeline-creado-xml-v2"
 def xml = '''
 <?xml version='1.1' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@1400.v7fd111b_ec82f">
