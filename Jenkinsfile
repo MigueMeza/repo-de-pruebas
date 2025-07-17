@@ -3,8 +3,8 @@ pipeline {
 
   environment {
     JENKINS_URL = 'http://localhost:8080'         // Cambia si es necesario
-    FOLDER_PATH     = 'folder1/folder2'
-    NEW_JOB_NAME = '/job/folder1/job-creado-con-curl'
+    FOLDER_PATH     = 'folder1/folder2'                 // Ruta de carpetas
+    NEW_JOB_NAME    = 'job-creado-con-curl'
     FULL_JOB_PATH   = "${FOLDER_PATH}/${NEW_JOB_NAME}"
     JENKINS_USER = 'miguel'                        // Usuario Jenkins
     JENKINS_TOKEN = '1132f14ba2dc278701ccf951de27e69289'               // Token/API key
