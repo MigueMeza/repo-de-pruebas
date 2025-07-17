@@ -22,6 +22,7 @@ pipeline {
           """
       }
     }
+    
     stage('Crear Job con curl') {
       steps {
  
@@ -29,9 +30,17 @@ pipeline {
           curl -X POST -u "%JENKINS_USER%:%JENKINS_TOKEN%" ^
             -H "Content-Type: application/xml" ^
             --data-binary @config.xml ^
-            "%JENKINS_URL%/createItem?name=%NEW_JOB_NAME%"
+            "%JENKINS_URL%/job/folder1/job/folder2/createItem?name=%NEW_JOB_NAME%"
         '''
       }
     }
+
+    stage('Ejecutar job') {
+      steps {
+        bat """
+          curl -X POST -u %JENKINS_USER%:%JENKINS_TOKEN% ^
+            "%JENKINS_URL%/job/folder1/job/folder2/job/%NEW_JOB_NAME%/build"
+        """
+      }
   }
 }
