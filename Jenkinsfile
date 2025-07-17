@@ -42,5 +42,6 @@ pipeline {
             "%JENKINS_URL%/job/folder1/job/folder2/job/%NEW_JOB_NAME%/build"
         """
       }
+    }
   }
 }
